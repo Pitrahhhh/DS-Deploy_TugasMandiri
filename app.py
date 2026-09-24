@@ -8,7 +8,7 @@ st.set_page_config(page_title="AI vs Real Image Detector", layout="centered")
 
 IMG_SIZE = (224, 224)
 MODEL_PATH = "Model_MobileNetV2.keras"
-CLASS_NAMES = ["CitraAI", "CitraAsli"]
+CLASS_NAMES = ["CitraAsli", "CitraAI"]
 
 # Index kelas "CitraAI" di CLASS_NAMES di atas — WAJIB dicek ke train_gen.class_indices
 # hasil training (dicetak otomatis di notebook). Ganti angkanya kalau urutannya beda.
