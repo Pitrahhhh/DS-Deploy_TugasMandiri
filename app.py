@@ -9,7 +9,6 @@ st.set_page_config(page_title="AI vs Real Image Detector", layout="centered")
 IMG_SIZE = (224, 224)
 MODEL_PATH = "Model_MobileNetV2.keras"
 
-# Disesuaikan persis dengan class_indices: {'CitraAI': 0, 'CitraAsli': 1}
 CLASS_NAMES = ["CitraAI", "CitraAsli"]
 
 
@@ -62,9 +61,8 @@ def main():
             st.write(f"**Confidence:** {confidence * 100:.2f}%")
             st.progress(confidence)
 
-            # Tampilan output sesuai kelas
             if pred_class == "CitraAI":
-                st.warning("Gambar ini terindikasi dibuat oleh AI (misal Midjourney, DALL-E, Stable Diffusion).")
+                st.warning("Gambar ini terindikasi dibuat oleh AI.")
             else:
                 st.success("Gambar ini terindikasi sebagai foto asli.")
 
