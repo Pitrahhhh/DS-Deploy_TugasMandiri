@@ -8,11 +8,9 @@ st.set_page_config(page_title="AI vs Real Image Detector", layout="centered")
 
 IMG_SIZE = (224, 224)
 MODEL_PATH = "Model_MobileNetV2.keras"
-CLASS_NAMES = ["CitraAsli", "CitraAI"]
 
-# Index kelas "CitraAI" di CLASS_NAMES di atas — WAJIB dicek ke train_gen.class_indices
-# hasil training (dicetak otomatis di notebook). Ganti angkanya kalau urutannya beda.
-AI_CLASS_INDEX = CLASS_NAMES.index("CitraAI")
+# Disesuaikan persis dengan class_indices: {'CitraAI': 0, 'CitraAsli': 1}
+CLASS_NAMES = ["CitraAI", "CitraAsli"]
 
 
 @st.cache_resource
@@ -48,20 +46,25 @@ def main():
                 processed = preprocess_image(image)
                 prob = float(model.predict(processed)[0][0])
 
+            # prob > 0.5 -> Indeks 1 (CitraAsli)
+            # prob <= 0.5 -> Indeks 0 (CitraAI)
+            if prob > 0.5:
+                pred_index = 1
+                confidence = prob
+            else:
+                pred_index = 0
+                confidence = 1 - prob
 
-            pred_index = 1 if prob > 0.5 else 0
             pred_class = CLASS_NAMES[pred_index]
-            confidence = prob if prob > 0.5 else 1 - prob
-
-            is_ai = pred_index == AI_CLASS_INDEX
 
             st.subheader("Hasil Deteksi")
             st.write(f"**Prediksi:** {pred_class}")
             st.write(f"**Confidence:** {confidence * 100:.2f}%")
             st.progress(confidence)
 
-            if is_ai:
-                st.warning("Gambar ini terindikasi dibuat oleh AI.")
+            # Tampilan output sesuai kelas
+            if pred_class == "CitraAI":
+                st.warning("Gambar ini terindikasi dibuat oleh AI (misal Midjourney, DALL-E, Stable Diffusion).")
             else:
                 st.success("Gambar ini terindikasi sebagai foto asli.")
 
